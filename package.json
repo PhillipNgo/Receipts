@@ -1,0 +1,34 @@
+{
+  "name": "receipts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "flow": "flow"
+  },
+  "dependencies": {
+    "@mantine/core": "^7.10.2",
+    "@mantine/hooks": "^7.10.2",
+    "@nextui-org/react": "^2.4.2",
+    "@stylexjs/stylex": "^0.6.1",
+    "babel-plugin-syntax-hermes-parser": "^0.22.0",
+    "next": "14.2.4",
+    "next-auth": "^4.24.7",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@stylexjs/babel-plugin": "^0.6.1",
+    "@stylexjs/eslint-plugin": "^0.6.1",
+    "@stylexjs/nextjs-plugin": "^0.6.1",
+    "babel-plugin-transform-flow-enums": "^0.0.2",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.4",
+    "flow-bin": "^0.238.1",
+    "flow-enums-runtime": "^0.0.6"
+  }
+}
