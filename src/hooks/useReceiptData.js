@@ -22,5 +22,5 @@ export default function useReceiptData(): Array<ReceiptItem> {
       });
     }
     return items;
-  }, [data]);
+  }, []);
 }

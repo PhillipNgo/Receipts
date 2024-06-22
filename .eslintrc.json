@@ -1,5 +1,6 @@
 {
   "extends": "next/core-web-vitals",
+  "parser": "hermes-eslint",
   "plugins": ["@stylexjs"],
   "rules": {
     "@stylexjs/valid-styles": "error"

@@ -1,4 +1,4 @@
-export default {
+const data = {
   responses: [
     {
       fullTextAnnotation: {
@@ -30293,3 +30293,5 @@ export default {
     },
   ],
 };
+
+export default data;

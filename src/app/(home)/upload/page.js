@@ -60,7 +60,12 @@ export default function Upload() {
       </SimpleGrid>
       {formData.fileSrc && (
         <SimpleGrid cols={{ base: 1, md: 2 }}>
-          <Image fit="contain" radius="md" src={formData.fileSrc} />
+          <Image
+            alt="Receipt"
+            fit="contain"
+            radius="md"
+            src={formData.fileSrc}
+          />
           <Table>
             <Table.Thead>
               <Table.Tr>

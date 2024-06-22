@@ -29,6 +29,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "flow-bin": "^0.238.1",
-    "flow-enums-runtime": "^0.0.6"
+    "flow-enums-runtime": "^0.0.6",
+    "hermes-eslint": "^0.22.0"
   }
 }
