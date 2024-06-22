@@ -1,11 +1,11 @@
 import type { Receipt } from "types/Receipt";
-import type Participant from "types/Participant";
+import type User from "types/User";
 
 type Project = {
   name: string,
   key: string,
   receipts: Array<Receipt>,
-  participants: Array<Participant>,
+  users: Array<User>,
 };
 
 export default Project;

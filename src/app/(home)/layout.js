@@ -19,7 +19,7 @@ export default function Layout({ children }) {
       padding="md"
     >
       <Header opened={opened} toggle={toggle} />
-      <Navbar />
+      <Navbar opened={opened} toggle={toggle} />
       <AppShell.Main>{children}</AppShell.Main>
     </AppShell>
   );

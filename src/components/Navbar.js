@@ -11,7 +11,7 @@ const ROUTES: Array<Route> = [
   { name: "Upload Receipt", route: "/upload" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ opened, toggle }) {
   const router = useRouter();
   const pathname = usePathname();
   return (
@@ -20,7 +20,12 @@ export default function Navbar() {
         {ROUTES.map(({ name, route }) => (
           <NavLink
             key={name}
-            onClick={() => router.push(route)}
+            onClick={() => {
+              router.push(route);
+              if (opened) {
+                toggle();
+              }
+            }}
             label={name}
             active={pathname === route}
           />
