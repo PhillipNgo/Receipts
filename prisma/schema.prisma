@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+enum SplitType {
+  SPLIT
+  ITEMIZED
+}
+
+model Project {
+  id       String    @id @unique
+  name     String
+  receipts Receipt[]
+  users    User[]
+
+  @@map("projects")
+}
+
+model User {
+  email         String        @id @unique
+  name          String
+  projects      Project[]
+  receipts      Receipt[]
+  receipt_items ReceiptItem[]
+
+  @@map("users")
+}
+
+model Receipt {
+  id            String        @id @default(cuid())
+  project       Project       @relation(fields: [project_id], references: [id])
+  project_id    String
+  split_type    SplitType
+  users         User[]
+  total         Decimal
+  receipt_items ReceiptItem[]
+
+  created_at DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("receipts")
+}
+
+model ReceiptItem {
+  id         String    @id @default(cuid())
+  receipt    Receipt   @relation(fields: [receipt_id], references: [id])
+  receipt_id String
+  split_type SplitType
+  users      User[]
+  total      Decimal
+
+  @@map("receipt_items")
+}

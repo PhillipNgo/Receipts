@@ -1,6 +1,5 @@
-import { AppShell, Burger, Button, Group, Title } from "@mantine/core";
+import { AppShell, Burger, Group, Title } from "@mantine/core";
 import * as stylex from "@stylexjs/stylex";
-import { signOut } from "next-auth/react";
 import Link from "next/link";
 
 const styles = stylex.create({
@@ -11,9 +10,6 @@ const styles = stylex.create({
     width: "100%",
     justifyContent: "space-between",
   },
-  burger: {
-    marginRight: 8,
-  },
   title: {
     color: "inherit",
     textDecoration: "none",
@@ -23,17 +19,20 @@ const styles = stylex.create({
 export default function Header({ opened, toggle }) {
   return (
     <AppShell.Header {...stylex.props(styles.header)}>
-      <Burger
-        {...stylex.props(styles.burger)}
-        opened={opened}
-        onClick={toggle}
-        hiddenFrom="md"
-        size="md"
-      />
-      <Link {...stylex.props(styles.title)} href="/">
-        <Title>Receipts</Title>
-      </Link>
-      <Button onClick={() => signOut()}>Sign out</Button>
+      <Group gap="xs">
+        <Burger opened={opened} onClick={toggle} hiddenFrom="md" size="md" />
+        <Link
+          {...stylex.props(styles.title)}
+          href="/"
+          onClick={() => {
+            if (opened) {
+              toggle();
+            }
+          }}
+        >
+          <Title>Receipts</Title>
+        </Link>
+      </Group>
     </AppShell.Header>
   );
 }

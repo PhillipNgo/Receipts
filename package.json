@@ -7,12 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "flow": "flow"
+    "flow": "flow",
+    "prisma": "prisma"
   },
   "dependencies": {
     "@mantine/core": "^7.10.2",
     "@mantine/hooks": "^7.10.2",
     "@nextui-org/react": "^2.4.2",
+    "@prisma/client": "^5.15.1",
     "@stylexjs/stylex": "^0.6.1",
     "@vercel/postgres": "^0.8.0",
     "next": "14.2.4",
@@ -31,6 +33,7 @@
     "eslint-config-next": "14.2.4",
     "flow-bin": "^0.238.1",
     "flow-enums-runtime": "^0.0.6",
-    "hermes-eslint": "^0.22.0"
+    "hermes-eslint": "^0.22.0",
+    "prisma": "^5.15.1"
   }
 }

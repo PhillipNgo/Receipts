@@ -1,26 +1,16 @@
-"use client";
+import AppLayout from "components/AppLayout";
 
-import { AppShell } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import prisma from "lib/prisma";
+import { getServerSession } from "next-auth";
 
-import Header from "components/Header";
-import Navbar from "components/Navbar";
-
-export default function Layout({ children }) {
-  const [opened, { toggle }] = useDisclosure(false);
-  return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{
-        width: 300,
-        breakpoint: "md",
-        collapsed: { mobile: !opened },
-      }}
-      padding="md"
-    >
-      <Header opened={opened} toggle={toggle} />
-      <Navbar opened={opened} toggle={toggle} />
-      <AppShell.Main>{children}</AppShell.Main>
-    </AppShell>
-  );
+export default async function Layout({ children }) {
+  const session = await getServerSession();
+  const projects = await prisma.project.findMany({
+    where: {
+      users: {
+        some: session.email,
+      },
+    },
+  });
+  return <AppLayout projects={projects}>{children}</AppLayout>;
 }

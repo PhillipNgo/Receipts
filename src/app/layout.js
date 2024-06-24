@@ -5,6 +5,7 @@ import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { getServerSession } from "next-auth";
 
 import { Provider as SessionProvider } from "contexts/SessionProvider";
+
 export const metadata = {
   title: "Receipts",
   description: "Receipts",
@@ -12,7 +13,6 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const session = await getServerSession();
-  console.log(session);
   return (
     <html lang="en">
       <head>
