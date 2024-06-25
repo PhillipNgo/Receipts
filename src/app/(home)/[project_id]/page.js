@@ -1,5 +1,5 @@
 import { Container } from "@mantine/core";
-import ProjectNavbar from "components/ProjectNavbar";
+import ProjectPage from "components/ProjectPage";
 import UploadModal from "components/UploadModal";
 import prisma from "lib/prisma";
 
@@ -18,8 +18,8 @@ export default async function Page({
     },
   });
   return (
-    <Container size="xl">
-      <ProjectNavbar project={project} />
+    <Container size="lg">
+      <ProjectPage project={JSON.parse(JSON.stringify(project))} />
     </Container>
   );
 }

@@ -34,6 +34,7 @@ model User {
 
 model Receipt {
   id            String        @id @default(cuid())
+  name          String
   project       Project       @relation(fields: [project_id], references: [id])
   project_id    String
   split_type    SplitType
@@ -49,6 +50,7 @@ model Receipt {
 
 model ReceiptItem {
   id         String    @id @default(cuid())
+  name       String
   receipt    Receipt   @relation(fields: [receipt_id], references: [id])
   receipt_id String
   split_type SplitType

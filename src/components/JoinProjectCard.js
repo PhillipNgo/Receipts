@@ -2,9 +2,15 @@
 
 import { Button, Card, Image, Text, Input, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import joinProject from "actions/joinProject";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 
 export default function JoinProjectCard() {
   const [opened, { open, close }] = useDisclosure(false);
+  const [projectId, setProjectId] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   return (
     <Card shadow="sm" padding="lg" radius="md" w="100%" withBorder>
       <Stack>
@@ -17,8 +23,24 @@ export default function JoinProjectCard() {
           />
         </Card.Section>
         <Text fw={500}>Join project</Text>
-        <Input placeholder="Project code" />
-        <Button color="orange" fullWidth radius="md">
+        <Input
+          disabled={isPending}
+          value={projectId}
+          onChange={(e) => setProjectId(e.target.value)}
+          placeholder="Project code"
+        />
+        <Button
+          disabled={isPending}
+          loading={isPending}
+          onClick={async () =>
+            startTransition(() => {
+              joinProject(projectId).then(() => router.push(projectId));
+            })
+          }
+          color="orange"
+          fullWidth
+          radius="md"
+        >
           Join
         </Button>
       </Stack>

@@ -8,7 +8,9 @@ export default async function Layout({ children }) {
   const projects = await prisma.project.findMany({
     where: {
       users: {
-        some: session.email,
+        some: {
+          email: session.user.email,
+        },
       },
     },
   });

@@ -26,7 +26,9 @@ export default async function Home() {
   const projects = await prisma.project.findMany({
     where: {
       users: {
-        some: session.email,
+        some: {
+          email: session.user.email,
+        },
       },
     },
     include: {

@@ -11,10 +11,12 @@ import {
   Select,
   Input,
   Modal,
+  useMantineTheme,
 } from "@mantine/core";
 import { useMemo, useState } from "react";
 import SplitTypeSelector from "components/SplitTypeSelector";
 import useReceiptData from "hooks/useReceiptData";
+import { useMediaQuery } from "@mantine/hooks";
 
 type FormData = {
   fileSrc: string,
@@ -31,11 +33,14 @@ const DEFAULT_FORM_VALUES: FormData = {
 export default function UploadModal({ opened, onClose }) {
   const [formData, setFormData] = useState(DEFAULT_FORM_VALUES);
   const receiptItems = useReceiptData();
+  const theme = useMantineTheme();
+  const mediaQuery = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
   return (
     <Modal
       opened={opened}
       onClose={onClose}
-      fullScreen={true}
+      fullScreen={mediaQuery}
+      size="xl"
       title="Upload receipt"
     >
       <Flex direction="column" gap="md">
