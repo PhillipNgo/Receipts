@@ -92,7 +92,7 @@ export default function UploadModal({ opened, onClose }) {
                 {receiptItems.map((item) => (
                   <Table.Tr key={item.name}>
                     <Table.Td>{item.name}</Table.Td>
-                    <Table.Td>{item.cost}</Table.Td>
+                    <Table.Td ta="right">{item.cost}</Table.Td>
                   </Table.Tr>
                 ))}
               </Table.Tbody>

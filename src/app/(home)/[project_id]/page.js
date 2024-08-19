@@ -14,7 +14,17 @@ export default async function Page({
     },
     include: {
       users: true,
-      receipts: true,
+      receipts: {
+        include: {
+          users: true,
+          receipt_items: {
+            include: {
+              users: true,
+            },
+          },
+          user_proportions: true,
+        },
+      },
     },
   });
   return (

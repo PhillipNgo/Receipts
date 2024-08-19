@@ -1,17 +1,36 @@
 import { createContext } from "react";
 
 type TProjectContext = {
-  name: string,
-  id: string,
-  receipts: Array<{
+  project: {
     name: string,
-    split_type: string,
-    total: number,
-  }>,
-  users: Array<{
+    id: string,
+    receipts: Array<{
+      name: string,
+      split_type: string,
+      total: number,
+      users: Array<{
+        email: string,
+        name: string,
+      }>,
+      receipt_items: Array<{
+        name: string,
+        split_type: string,
+        total: Number,
+        users: Array<{
+          email: string,
+          name: string,
+        }>,
+      }>,
+    }>,
+    users: Array<{
+      email: string,
+      name: string,
+    }>,
+  },
+  userTotals: {
     email: string,
-    name: string,
-  }>,
+    total: email,
+  },
 };
 
 const defaultValue: TProjectContext = {};

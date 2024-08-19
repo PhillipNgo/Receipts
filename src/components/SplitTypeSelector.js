@@ -5,12 +5,29 @@ type Props = {
   onChange: (SpltType) => void,
 };
 
-export default function SplitTypeSelector({ onChange }: Props) {
+function getLabel(type: SplitType) {
+  switch (type) {
+    case "SPLIT":
+      return "Split";
+    case "ITEMIZED":
+      return "Itemized";
+    case "PROPORTIONAL":
+      return "Proportional";
+  }
+}
+
+export default function SplitTypeSelector({ onChange, value }: Props) {
   return (
     <Select
+      placeholder="Select receipt type"
       label="Receipt type"
-      data={Array.from(SplitType.members())}
+      data={Array.from(SplitType.members()).map((type) => ({
+        value: type,
+        label: getLabel(type),
+        disabled: value === type,
+      }))}
       onChange={onChange}
+      value={value}
     />
   );
 }

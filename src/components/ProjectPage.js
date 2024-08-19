@@ -5,12 +5,12 @@ import UploadModal from "./UploadModal";
 import { useDisclosure } from "@mantine/hooks";
 import ProjectOverview from "./ProjectOverview";
 import ProjectSettings from "./ProjectSettings";
-import ProjectContext from "contexts/ProjectContext";
+import ProjectContextProvider from "contexts/ProjectContextProvider";
 
 export default function ProjectPage({ project }) {
   const [opened, { open, close }] = useDisclosure(false);
   return (
-    <ProjectContext.Provider value={project}>
+    <ProjectContextProvider project={project}>
       <Stack>
         <Group justify="space-between" align="center">
           <Group align="center" justify="space-between">
@@ -32,6 +32,6 @@ export default function ProjectPage({ project }) {
           </Tabs.Panel>
         </Tabs>
       </Stack>
-    </ProjectContext.Provider>
+    </ProjectContextProvider>
   );
 }

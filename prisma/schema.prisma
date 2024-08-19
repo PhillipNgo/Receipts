@@ -11,6 +11,7 @@ datasource db {
 enum SplitType {
   SPLIT
   ITEMIZED
+  PROPORTIONAL
 }
 
 model Project {
@@ -28,19 +29,32 @@ model User {
   projects      Project[]
   receipts      Receipt[]
   receipt_items ReceiptItem[]
+  user_weights  UserWeight[]
 
   @@map("users")
 }
 
+model UserWeight {
+  user       User    @relation(fields: [user_id], references: [email])
+  user_id    String
+  weight     Int
+  Receipt    Receipt @relation(fields: [receipt_id], references: [id])
+  receipt_id String
+
+  @@id([receipt_id, user_id])
+  @@map("user_weights")
+}
+
 model Receipt {
-  id            String        @id @default(cuid())
-  name          String
-  project       Project       @relation(fields: [project_id], references: [id])
-  project_id    String
-  split_type    SplitType
-  users         User[]
-  total         Decimal
-  receipt_items ReceiptItem[]
+  id               String        @id @default(cuid())
+  name             String
+  project          Project       @relation(fields: [project_id], references: [id])
+  project_id       String
+  split_type       SplitType
+  users            User[]
+  total            Decimal
+  receipt_items    ReceiptItem[]
+  user_proportions UserWeight[]
 
   created_at DateTime @default(now())
   updatedAt  DateTime @updatedAt

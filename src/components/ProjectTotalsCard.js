@@ -1,25 +1,13 @@
 import { Card, Table, Title } from "@mantine/core";
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 import ProjectContext from "contexts/ProjectContext";
 
+function roundNumber(num) {
+  return Number(Math.round(num + "e+2") + "e-2");
+}
+
 export default function ProjectTotalsCard() {
-  const project = useContext(ProjectContext);
-  const userTotals = useMemo(
-    () =>
-      project.users.map((user) => {
-        const total = project.receipts.reduce((prevValue, receipt) => {
-          if (receipt.split_type === "SPLIT") {
-            return prevValue + receipt.total / project.users.length;
-          }
-          return prevValue;
-        }, 0);
-        return {
-          email: user.email,
-          total,
-        };
-      }),
-    [project]
-  );
+  const { project, userTotals } = useContext(ProjectContext);
   return (
     <Card mt="md" radius="lg">
       <Card.Section inheritPadding py="sm">
@@ -31,21 +19,16 @@ export default function ProjectTotalsCard() {
             <Table.Tr key={user.name}>
               <Table.Td>{user.name}</Table.Td>
               <Table.Td ta="right">
-                {`$${(
-                  Math.round(
-                    userTotals.find(
-                      (userTotal) => userTotal.email === user.email
-                    ).total * 100
-                  ) / 100
-                ).toFixed(2)}`}
+                {`$${userTotals
+                  .find((userTotal) => userTotal.email === user.email)
+                  .total.toFixed(2)}`}
               </Table.Td>
             </Table.Tr>
           ))}
           <Table.Tr>
             <Table.Td fw={700}>Total</Table.Td>
-            <Table.Td ta="right">{`$${userTotals.reduce(
-              (a, b) => a + b.total,
-              0
+            <Table.Td fw={700} ta="right">{`$${roundNumber(
+              userTotals.reduce((a, b) => a + b.total, 0)
             )}`}</Table.Td>
           </Table.Tr>
         </Table.Tbody>

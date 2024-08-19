@@ -1,4 +1,5 @@
 export default enum SplitType {
-  Split,
-  Itemized,
+  SPLIT,
+  ITEMIZED,
+  PROPORTIONAL,
 }
