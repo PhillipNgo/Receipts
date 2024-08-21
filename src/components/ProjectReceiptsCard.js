@@ -33,7 +33,7 @@ export default function ProjectReceiptsCard() {
                 setReceiptId(receipt.id);
                 open();
               }}
-              key={receipt.name}
+              key={receipt.id}
             >
               <Table.Td>{receipt.name}</Table.Td>
               <Table.Td ta="right">

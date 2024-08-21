@@ -6,6 +6,7 @@ import { useDisclosure } from "@mantine/hooks";
 import ProjectOverview from "./ProjectOverview";
 import ProjectSettings from "./ProjectSettings";
 import ProjectContextProvider from "contexts/ProjectContextProvider";
+import ReceiptModal from "./ReceiptModal";
 
 export default function ProjectPage({ project }) {
   const [opened, { open, close }] = useDisclosure(false);
@@ -16,7 +17,7 @@ export default function ProjectPage({ project }) {
           <Group align="center" justify="space-between">
             <Title order={2}>{project.name}</Title>
           </Group>
-          <UploadModal opened={opened} onClose={close} />
+          <ReceiptModal opened={opened} onClose={close} />
           <Button onClick={open}>Upload receipt</Button>
         </Group>
         <Tabs defaultValue="overview">

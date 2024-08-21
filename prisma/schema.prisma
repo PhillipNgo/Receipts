@@ -30,6 +30,7 @@ model User {
   receipts      Receipt[]
   receipt_items ReceiptItem[]
   user_weights  UserWeight[]
+  paid_receipts Receipt[]     @relation(name: "paid_receipts")
 
   @@map("users")
 }
@@ -55,6 +56,9 @@ model Receipt {
   total            Decimal
   receipt_items    ReceiptItem[]
   user_proportions UserWeight[]
+  payer            User          @relation(name: "paid_receipts", fields: [payer_id], references: [email])
+  payer_id         String
+  image_id         String?
 
   created_at DateTime @default(now())
   updatedAt  DateTime @updatedAt

@@ -11,6 +11,7 @@
     "prisma": "prisma"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.635.0",
     "@mantine/core": "^7.10.2",
     "@mantine/hooks": "^7.10.2",
     "@nextui-org/react": "^2.4.2",
