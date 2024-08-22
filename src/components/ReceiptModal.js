@@ -477,7 +477,7 @@ export default function ReceiptModal({ opened, onClose, receiptId }) {
           <Flex justify="space-between" wrap="wrap" gap="md">
             <ButtonGroup>
               <FileInput
-                maw={161}
+                maw={165}
                 name="image"
                 accept="image/png,image/jpeg"
                 clearable
