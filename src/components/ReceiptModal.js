@@ -116,6 +116,10 @@ export default function ReceiptModal({ opened, onClose, receiptId }) {
   if (receipt == null && receiptId != null) {
     return null;
   }
+
+  const subTotal = roundNumber(
+    formData.receiptItems.reduce((a, b) => a + (b.total ?? 0), 0)
+  );
   const isFormValid = () => {
     if (
       JSON.stringify(formData) === JSON.stringify(originalFormData) ||
@@ -138,7 +142,8 @@ export default function ReceiptModal({ opened, onClose, receiptId }) {
           formData.receiptItems.length > 0 &&
           formData.receiptItems.every(
             (item) => item.name != null && item.name !== "" && item.total > 0
-          )
+          ) &&
+          subTotal <= formData.total
         );
       case "PROPORTIONAL":
         return (
@@ -151,10 +156,6 @@ export default function ReceiptModal({ opened, onClose, receiptId }) {
         return false;
     }
   };
-
-  const subTotal = roundNumber(
-    formData.receiptItems.reduce((a, b) => a + (b.total ?? 0), 0)
-  );
 
   const upsert = upsertReceipt.bind(null, receipt?.id, project.id, formData);
   return (

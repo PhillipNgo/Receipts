@@ -3,19 +3,19 @@
 import prisma from "lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
-import {
-  S3Client,
-  ListObjectsCommand,
-  PutObjectCommand,
-} from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 async function upsertReceipt(receiptID, projectID, formData, otherData) {
-  const s3 = new S3Client({
-    region: process.env.AWS_BUCKET_REGION,
-  });
   const imageFile: File = otherData.get("image");
   let imageID;
   if (imageFile != null && imageFile.size !== 0) {
+    const s3 = new S3Client({
+      region: process.env.AWS_BUCKET_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    });
     const imageBody = await imageFile.arrayBuffer();
     imageID = `${crypto.randomUUID()}.${imageFile.type.split("/")[1]}`;
     await s3.send(
