@@ -168,6 +168,9 @@ export default function ReceiptModal({ opened, onClose, receiptId }) {
       closeOnClickOutside={!isLoading}
       closeOnEscape={!isLoading}
       withCloseButton={!isLoading}
+      removeScrollProps={{
+        allowPinchZoom: true,
+      }}
     >
       <form
         onSubmit={() => setIsLoading(true)}
