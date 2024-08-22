@@ -6,16 +6,26 @@ import {
   Pill,
   PillsInput,
   useCombobox,
+  useMatches,
 } from "@mantine/core";
 import ProjectContext from "contexts/ProjectContext";
 import { useContext } from "react";
 
-const MAX_PILLS = 3;
-
-export default function UserMultiSelect({ label, value, onChange }) {
+export default function UserMultiSelect({
+  label,
+  value,
+  onChange,
+  responsive = false,
+}) {
   const { project } = useContext(ProjectContext);
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
+  });
+  const maxPills = useMatches({
+    base: responsive ? 0 : 3,
+    sm: responsive ? 1 : 3,
+    md: responsive ? 2 : 3,
+    lg: 3,
   });
 
   const handleValueSelect = (selectedValue: string) => {
@@ -35,14 +45,14 @@ export default function UserMultiSelect({ label, value, onChange }) {
     pills = [<Pill key="everyone">Everyone</Pill>];
   } else {
     pills = value
-      .slice(0, MAX_PILLS)
+      .slice(0, maxPills)
       .map((val) => (
         <Pill key={val}>
           {project.users.find((user) => user.email === val).name}
         </Pill>
       ));
-    if (value.length > MAX_PILLS) {
-      pills.push(<Pill key="other">+{value.length - MAX_PILLS} others</Pill>);
+    if (value.length > maxPills) {
+      pills.push(<Pill key="other">+{value.length - maxPills}</Pill>);
     }
   }
 

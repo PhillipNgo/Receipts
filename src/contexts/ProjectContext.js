@@ -5,6 +5,7 @@ type TProjectContext = {
     name: string,
     id: string,
     receipts: Array<{
+      id: string,
       name: string,
       split_type: string,
       total: number,
@@ -21,16 +22,27 @@ type TProjectContext = {
           name: string,
         }>,
       }>,
+      user_proportions: Array<{
+        user_id: string,
+        weight: number,
+      }>,
     }>,
     users: Array<{
       email: string,
       name: string,
     }>,
   },
-  userTotals: {
+  receiptTotals: Array<{
+    id: string,
+    totals: Array<{
+      email: string,
+      total: number,
+    }>,
+  }>,
+  userTotals: Array<{
     email: string,
-    total: email,
-  },
+    total: number,
+  }>,
 };
 
 const defaultValue: TProjectContext = {};

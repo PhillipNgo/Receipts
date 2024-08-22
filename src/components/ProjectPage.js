@@ -1,7 +1,6 @@
 "use client";
 
 import { Button, Group, Stack, Tabs, Title } from "@mantine/core";
-import UploadModal from "./UploadModal";
 import { useDisclosure } from "@mantine/hooks";
 import ProjectOverview from "./ProjectOverview";
 import ProjectSettings from "./ProjectSettings";

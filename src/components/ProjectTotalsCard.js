@@ -6,7 +6,7 @@ function roundNumber(num) {
   return Number(Math.round(num + "e+2") + "e-2");
 }
 
-export default function ProjectTotalsCard() {
+export default function ProjectTotalsCard({ setSelectedUser }) {
   const { project, userTotals } = useContext(ProjectContext);
   return (
     <Card mt="md" radius="lg">
@@ -16,7 +16,10 @@ export default function ProjectTotalsCard() {
       <Table highlightOnHover>
         <Table.Tbody>
           {project.users.map((user) => (
-            <Table.Tr key={user.name}>
+            <Table.Tr
+              key={user.name}
+              onClick={() => setSelectedUser(user.email)}
+            >
               <Table.Td>{user.name}</Table.Td>
               <Table.Td ta="right">
                 {`$${userTotals

@@ -1,6 +1,5 @@
 import { Container } from "@mantine/core";
 import ProjectPage from "components/ProjectPage";
-import UploadModal from "components/UploadModal";
 import prisma from "lib/prisma";
 
 export default async function Page({

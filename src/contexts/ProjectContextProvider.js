@@ -33,7 +33,8 @@ function itemizeReceipt(receipt, projectUsers): Array<UserTotal> {
       ...receiptItem,
       total: receiptItem.total * multiplier,
     }))
-    .map((receiptItem) => splitReceipt(receiptItem, projectUsers));
+    .map((receiptItem) => splitReceipt(receiptItem, projectUsers))
+    .flat();
 }
 
 function proportionReceipt(receipt): Array<UserTotal> {
@@ -46,36 +47,59 @@ function proportionReceipt(receipt): Array<UserTotal> {
 }
 
 export default function ProjectContextProvider({ children, project }) {
+  const receiptTotals = useMemo(
+    () =>
+      project.receipts
+        .map((receipt) => {
+          switch (receipt.split_type) {
+            case "SPLIT":
+              return splitReceipt(receipt, project.users);
+            case "ITEMIZED":
+              return itemizeReceipt(receipt, project.users);
+            case "PROPORTIONAL":
+              return proportionReceipt(receipt);
+          }
+        })
+        .map((receiptUsers, index) => {
+          const totals = project.users.map((user) => ({
+            email: user.email,
+            total: 0,
+          }));
+          receiptUsers.forEach((receiptUser) => {
+            const userTotal = totals.find(
+              (total) => total.email === receiptUser.email
+            );
+            userTotal.total = userTotal.total + receiptUser.total;
+          });
+          return {
+            id: project.receipts[index].id,
+            totals,
+          };
+        }),
+    [project]
+  );
+
   const userTotals = useMemo(() => {
     const totals = project.users.map((user) => ({
       email: user.email,
       total: 0,
     }));
-    const receiptUserTotals = project.receipts
-      .map((receipt) => {
-        switch (receipt.split_type) {
-          case "SPLIT":
-            return splitReceipt(receipt, project.users);
-          case "ITEMIZED":
-            return itemizeReceipt(receipt, project.users);
-          case "PROPORTIONAL":
-            return proportionReceipt(receipt);
-        }
-      })
-      .flat(2);
-    receiptUserTotals.forEach((receiptUserTotal) => {
-      const userTotal = totals.find(
-        (total) => total.email === receiptUserTotal.email
-      );
-      userTotal.total = userTotal.total + receiptUserTotal.total;
-    });
+    receiptTotals
+      .map((receiptTotal) => receiptTotal.totals)
+      .flat()
+      .forEach((receiptUserTotal) => {
+        const userTotal = totals.find(
+          (total) => total.email === receiptUserTotal.email
+        );
+        userTotal.total = userTotal.total + receiptUserTotal.total;
+      });
     return totals.map((userTotal) => ({
       ...userTotal,
       total: roundNumber(userTotal.total),
     }));
-  }, [project]);
+  }, [project, receiptTotals]);
   return (
-    <ProjectContext.Provider value={{ project, userTotals }}>
+    <ProjectContext.Provider value={{ project, userTotals, receiptTotals }}>
       {children}
     </ProjectContext.Provider>
   );

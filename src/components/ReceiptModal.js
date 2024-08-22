@@ -265,211 +265,219 @@ export default function ReceiptModal({ opened, onClose, receiptId }) {
           )}
           {formData.splitType === "ITEMIZED" &&
             formData.receiptItems.length > 0 && (
+              <Table.ScrollContainer minWidth={525}>
+                <Table>
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th>Name</Table.Th>
+                      <Table.Th>Split</Table.Th>
+                      <Table.Th>Cost</Table.Th>
+                      <Table.Th></Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>
+                    {formData.receiptItems.map((item, index) => (
+                      <Table.Tr key={index}>
+                        <Table.Td>
+                          <TextInput
+                            miw={100}
+                            placeholder="Enter name"
+                            value={item.name ?? ""}
+                            onChange={(e) => {
+                              setFormData((prevData) => {
+                                prevData.receiptItems[index].name =
+                                  e.target.value;
+                                return {
+                                  ...prevData,
+                                };
+                              });
+                            }}
+                          />
+                        </Table.Td>
+                        <Table.Td>
+                          <UserMultiSelect
+                            value={item.users}
+                            onChange={(value) => {
+                              setFormData((prevData) => {
+                                prevData.receiptItems[index].users = value;
+                                return {
+                                  ...prevData,
+                                };
+                              });
+                            }}
+                            responsive
+                          />
+                        </Table.Td>
+                        <Table.Td maw={125}>
+                          <NumberInput
+                            placeholder="Receipt total"
+                            clampBehavior="strict"
+                            prefix="$"
+                            min={0}
+                            decimalScale={2}
+                            value={item.total}
+                            onChange={(value) => {
+                              setFormData((prevData) => {
+                                prevData.receiptItems[index].total = value;
+                                return {
+                                  ...prevData,
+                                };
+                              });
+                            }}
+                            miw={75}
+                          />
+                        </Table.Td>
+                        <Table.Td maw={30}>
+                          <ActionIcon
+                            onClick={() => {
+                              setFormData((prevData) => {
+                                const newItems = prevData.receiptItems.filter(
+                                  (item, ind) => ind !== index
+                                );
+                                return {
+                                  ...prevData,
+                                  receiptItems: newItems,
+                                };
+                              });
+                            }}
+                            variant="default"
+                          >
+                            <CloseIcon />
+                          </ActionIcon>
+                        </Table.Td>
+                      </Table.Tr>
+                    ))}
+                    <Table.Tr>
+                      <Table.Td valign="top">
+                        <Button
+                          size="compact-sm"
+                          color="orange"
+                          disabled={isLoading}
+                          onClick={() => {
+                            setFormData((prevData) => {
+                              return {
+                                ...prevData,
+                                receiptItems: [
+                                  ...prevData.receiptItems,
+                                  { ...DEFAULT_RECEIPT_ITEM },
+                                ],
+                              };
+                            });
+                          }}
+                        >
+                          + Add item
+                        </Button>
+                      </Table.Td>
+                      <Table.Td ta="right" valign="top">
+                        <Text fw={700}>Subtotal</Text>
+                        <Text fw={700}>Tax/Service</Text>
+                      </Table.Td>
+                      <Table.Td ta="left" colSpan={2}>
+                        <Text fw={700}>${subTotal}</Text>
+                        <Text fw={700}>
+                          $
+                          {formData == null || formData.total == 0
+                            ? 0
+                            : roundNumber(formData.total - subTotal)}{" "}
+                          (
+                          {formData == null || formData.total == 0
+                            ? 0
+                            : roundNumber(
+                                ((formData.total - subTotal) / subTotal) * 100
+                              )}
+                          %)
+                        </Text>
+                      </Table.Td>
+                    </Table.Tr>
+                  </Table.Tbody>
+                </Table>
+              </Table.ScrollContainer>
+            )}
+          {formData.splitType === "PROPORTIONAL" && (
+            <Table.ScrollContainer minWidth={300}>
               <Table>
                 <Table.Thead>
                   <Table.Tr>
                     <Table.Th>Name</Table.Th>
-                    <Table.Th>Split</Table.Th>
-                    <Table.Th>Cost</Table.Th>
-                    <Table.Th></Table.Th>
+                    <Table.Th>Weight</Table.Th>
+                    <Table.Th>Portion</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                  {formData.receiptItems.map((item, index) => (
-                    <Table.Tr key={index}>
-                      <Table.Td>
-                        <TextInput
-                          placeholder="Enter name"
-                          value={item.name ?? ""}
-                          onChange={(e) => {
-                            setFormData((prevData) => {
-                              prevData.receiptItems[index].name =
-                                e.target.value;
-                              return {
-                                ...prevData,
-                              };
-                            });
-                          }}
-                        />
-                      </Table.Td>
-                      <Table.Td>
-                        <UserMultiSelect
-                          value={item.users}
-                          onChange={(value) => {
-                            setFormData((prevData) => {
-                              prevData.receiptItems[index].users = value;
-                              return {
-                                ...prevData,
-                              };
-                            });
-                          }}
-                        />
-                      </Table.Td>
-                      <Table.Td maw={100}>
-                        <NumberInput
-                          placeholder="Receipt total"
-                          clampBehavior="strict"
-                          prefix="$"
-                          min={0}
-                          decimalScale={2}
-                          value={item.total}
-                          onChange={(value) => {
-                            setFormData((prevData) => {
-                              prevData.receiptItems[index].total = value;
-                              return {
-                                ...prevData,
-                              };
-                            });
-                          }}
-                        />
-                      </Table.Td>
-                      <Table.Td maw={30}>
-                        <ActionIcon
-                          onClick={() => {
-                            setFormData((prevData) => {
-                              const newItems = prevData.receiptItems.filter(
-                                (item, ind) => ind !== index
-                              );
-                              return {
-                                ...prevData,
-                                receiptItems: newItems,
-                              };
-                            });
-                          }}
-                          variant="default"
-                        >
-                          <CloseIcon />
-                        </ActionIcon>
-                      </Table.Td>
-                    </Table.Tr>
-                  ))}
-                  <Table.Tr>
-                    <Table.Td valign="top">
-                      <Button
-                        size="compact-sm"
-                        color="orange"
-                        disabled={isLoading}
-                        onClick={() => {
-                          setFormData((prevData) => {
-                            return {
-                              ...prevData,
-                              receiptItems: [
-                                ...prevData.receiptItems,
-                                { ...DEFAULT_RECEIPT_ITEM },
-                              ],
-                            };
-                          });
-                        }}
-                      >
-                        + Add item
-                      </Button>
-                    </Table.Td>
-                    <Table.Td ta="right">
-                      <Text fw={700}>Subtotal</Text>
-                      <Text fw={700}>Tax/Service</Text>
-                    </Table.Td>
-                    <Table.Td ta="left">
-                      <Text fw={700}>${subTotal}</Text>
-                      <Text fw={700}>
-                        $
-                        {formData == null || formData.total == 0
-                          ? 0
-                          : roundNumber(formData.total - subTotal)}{" "}
-                        (
-                        {formData == null || formData.total == 0
-                          ? 0
-                          : roundNumber(
-                              ((formData.total - subTotal) / subTotal) * 100
-                            )}
-                        %)
-                      </Text>
-                    </Table.Td>
-                  </Table.Tr>
-                </Table.Tbody>
-              </Table>
-            )}
-          {formData.splitType === "PROPORTIONAL" && (
-            <Table>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>Name</Table.Th>
-                  <Table.Th>Weight</Table.Th>
-                  <Table.Th>Portion</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {project.users.map((user) => {
-                  const weight =
-                    formData.userProportions.find(
-                      (value) => value.user_id === user.email
-                    )?.weight ?? 0;
-                  const proportionsTotal = formData.userProportions.reduce(
-                    (a, b) => a + b.weight ?? 0,
-                    0
-                  );
-                  const proportion = weight / proportionsTotal;
-                  return (
-                    <Table.Tr key={user.email}>
-                      <Table.Td>{user.name}</Table.Td>
-                      <Table.Td maw={50}>
-                        <NumberInput
-                          placeholder="Enter weight"
-                          clampBehavior="strict"
-                          min={0}
-                          max={1000}
-                          decimalScale={0}
-                          value={weight}
-                          onChange={(value) => {
-                            setFormData((prevData) => {
-                              if (value == null || value == 0) {
-                                const newProportions =
-                                  prevData.userProportions.filter(
+                  {project.users.map((user) => {
+                    const weight =
+                      formData.userProportions.find(
+                        (value) => value.user_id === user.email
+                      )?.weight ?? 0;
+                    const proportionsTotal = formData.userProportions.reduce(
+                      (a, b) => a + b.weight ?? 0,
+                      0
+                    );
+                    const proportion = weight / proportionsTotal;
+                    return (
+                      <Table.Tr key={user.email}>
+                        <Table.Td>{user.name}</Table.Td>
+                        <Table.Td maw={50}>
+                          <NumberInput
+                            placeholder="Enter weight"
+                            clampBehavior="strict"
+                            min={0}
+                            max={1000}
+                            decimalScale={0}
+                            value={weight}
+                            onChange={(value) => {
+                              setFormData((prevData) => {
+                                if (value == null || value == 0) {
+                                  const newProportions =
+                                    prevData.userProportions.filter(
+                                      (proportion) =>
+                                        proportion.user_id !== user.email
+                                    );
+                                  return {
+                                    ...prevData,
+                                    userProportions: newProportions,
+                                  };
+                                }
+                                const userProportion =
+                                  prevData.userProportions.find(
                                     (proportion) =>
-                                      proportion.user_id !== user.email
+                                      proportion.user_id === user.email
                                   );
+                                if (userProportion == null) {
+                                  prevData.userProportions.push({
+                                    user_id: user.email,
+                                    weight: value,
+                                  });
+                                } else {
+                                  userProportion.weight = value;
+                                }
                                 return {
                                   ...prevData,
-                                  userProportions: newProportions,
                                 };
-                              }
-                              const userProportion =
-                                prevData.userProportions.find(
-                                  (proportion) =>
-                                    proportion.user_id === user.email
-                                );
-                              if (userProportion == null) {
-                                prevData.userProportions.push({
-                                  user_id: user.email,
-                                  weight: value,
-                                });
-                              } else {
-                                userProportion.weight = value;
-                              }
-                              return {
-                                ...prevData,
-                              };
-                            });
-                          }}
-                        />
-                      </Table.Td>
-                      <Table.Td maw={100}>
-                        $
-                        {isNaN(proportion)
-                          ? 0
-                          : roundNumber(formData.total * proportion)}{" "}
-                        ({weight == 0 ? 0 : roundNumber(100 * proportion)}
-                        %)
-                      </Table.Td>
-                    </Table.Tr>
-                  );
-                })}
-              </Table.Tbody>
-            </Table>
+                              });
+                            }}
+                          />
+                        </Table.Td>
+                        <Table.Td maw={100}>
+                          $
+                          {isNaN(proportion)
+                            ? 0
+                            : roundNumber(formData.total * proportion)}{" "}
+                          ({weight == 0 ? 0 : roundNumber(100 * proportion)}
+                          %)
+                        </Table.Td>
+                      </Table.Tr>
+                    );
+                  })}
+                </Table.Tbody>
+              </Table>
+            </Table.ScrollContainer>
           )}
           <Divider />
-          <Flex justify="space-between">
+          <Flex justify="space-between" wrap="wrap" gap="md">
             <ButtonGroup>
               <FileInput
+                maw={161}
                 name="image"
                 accept="image/png,image/jpeg"
                 clearable
