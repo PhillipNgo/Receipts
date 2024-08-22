@@ -22,14 +22,14 @@ export default function ProjectPage({ project }) {
         <Tabs defaultValue="overview">
           <Tabs.List>
             <Tabs.Tab value="overview">Overview</Tabs.Tab>
-            <Tabs.Tab value="settings">Settings</Tabs.Tab>
+            {/* <Tabs.Tab value="settings">Settings</Tabs.Tab> */}
           </Tabs.List>
           <Tabs.Panel value="overview">
             <ProjectOverview />
           </Tabs.Panel>
-          <Tabs.Panel value="settings">
+          {/* <Tabs.Panel value="settings">
             <ProjectSettings />
-          </Tabs.Panel>
+          </Tabs.Panel> */}
         </Tabs>
       </Stack>
     </ProjectContextProvider>
