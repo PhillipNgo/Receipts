@@ -4,7 +4,6 @@ import {
   Group,
   InputBase,
   Pill,
-  PillsInput,
   useCombobox,
   useMatches,
 } from "@mantine/core";
@@ -81,7 +80,7 @@ export default function UserMultiSelect({
         </InputBase>
       </Combobox.Target>
       <Combobox.Dropdown>
-        <Combobox.Options>
+        <Combobox.Options mah={290} style={{ overflowY: 'auto' }}>
           <Combobox.Option value="Everyone" disabled={isEveryone}>
             <Group gap="sm">
               {isEveryone ? <CheckIcon size={12} /> : null}
