@@ -6,6 +6,7 @@ import ProjectOverview from "./ProjectOverview";
 import ProjectSettings from "./ProjectSettings";
 import ProjectContextProvider from "contexts/ProjectContextProvider";
 import ReceiptModal from "./ReceiptModal";
+import ProjectPayments from "./ProjectPayments";
 
 export default function ProjectPage({ project }) {
   const [opened, { open, close }] = useDisclosure(false);
@@ -22,10 +23,14 @@ export default function ProjectPage({ project }) {
         <Tabs defaultValue="overview">
           <Tabs.List>
             <Tabs.Tab value="overview">Overview</Tabs.Tab>
+            <Tabs.Tab value="payments">Payments</Tabs.Tab>
             {/* <Tabs.Tab value="settings">Settings</Tabs.Tab> */}
           </Tabs.List>
           <Tabs.Panel value="overview">
             <ProjectOverview />
+          </Tabs.Panel>
+          <Tabs.Panel value="payments">
+            <ProjectPayments />
           </Tabs.Panel>
           {/* <Tabs.Panel value="settings">
             <ProjectSettings />
