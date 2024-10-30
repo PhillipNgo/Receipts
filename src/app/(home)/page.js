@@ -11,7 +11,9 @@ import {
   Flex,
 } from "@mantine/core";
 import * as stylex from "@stylexjs/stylex";
-import AddProjectCard from "components/JoinProjectCard";
+import CreateProjectCard from "components/CreateProjectCard";
+import CreateUserCard from "components/CreateUserCard";
+import JoinProjectCard from "components/JoinProjectCard";
 import ProjectCard from "components/ProjectCard";
 import prisma from "lib/prisma";
 import { getServerSession } from "next-auth";
@@ -35,6 +37,7 @@ export default async function Home() {
       users: true,
     },
   });
+  const isAdmin = session.user.email === process.env.ADMIN_EMAIL;
   return (
     <Container size="xl">
       <Center {...stylex.props(styles.container)}>
@@ -44,9 +47,9 @@ export default async function Home() {
             {projects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
-            <Center>
-              <AddProjectCard />
-            </Center>
+            <JoinProjectCard />
+            {isAdmin && <CreateProjectCard />}
+            {isAdmin && <CreateUserCard />}
           </SimpleGrid>
         </Stack>
       </Center>

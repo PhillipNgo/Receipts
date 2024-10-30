@@ -10,6 +10,7 @@ import ProjectPayments from "./ProjectPayments";
 
 export default function ProjectPage({ project }) {
   const [opened, { open, close }] = useDisclosure(false);
+
   return (
     <ProjectContextProvider project={project}>
       <Stack>
@@ -24,7 +25,7 @@ export default function ProjectPage({ project }) {
           <Tabs.List>
             <Tabs.Tab value="overview">Overview</Tabs.Tab>
             <Tabs.Tab value="payments">Payments</Tabs.Tab>
-            {/* <Tabs.Tab value="settings">Settings</Tabs.Tab> */}
+            <Tabs.Tab value="settings">Settings</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="overview">
             <ProjectOverview />
@@ -32,9 +33,9 @@ export default function ProjectPage({ project }) {
           <Tabs.Panel value="payments">
             <ProjectPayments />
           </Tabs.Panel>
-          {/* <Tabs.Panel value="settings">
+          <Tabs.Panel value="settings">
             <ProjectSettings />
-          </Tabs.Panel> */}
+          </Tabs.Panel>
         </Tabs>
       </Stack>
     </ProjectContextProvider>
